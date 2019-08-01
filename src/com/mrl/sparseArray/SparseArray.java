@@ -23,9 +23,9 @@ public class SparseArray {
         //将稀疏数组转换为普通数组
         int[][] arr2 = getArray(spa);
 
-        for (int i=0;i<arr2.length;i++){
-            for(int j=0;j<arr2[i].length;j++){
-                System.out.print(arr2[i][j]+"\t");
+        for (int[] ints : arr2) {
+            for (int anInt : ints) {
+                System.out.print(anInt + "\t");
             }
             System.out.println();
         }
@@ -45,15 +45,13 @@ public class SparseArray {
     }
 
     private static int[][] Deserialization() {
-        ObjectInputStream objectInputStream=null;
         int[][] spa=null;
         try {
 
-            objectInputStream=new ObjectInputStream(new FileInputStream("sparase.data"));
-          spa= (int[][]) objectInputStream.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("sparase.data"))) {
+                spa = (int[][]) objectInputStream.readObject();
+            }
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return spa;
@@ -70,12 +68,11 @@ public class SparseArray {
 
     private static int[][] setSparse(int[][] arr) {
         int row=0;
-        for(int i=0 ; i<arr.length;i++){
-            for (int j=0;j<arr[i].length;j++){
-                if(arr[i][j]!=0)
+        for (int[] ints : arr)
+            for (int anInt : ints) {
+                if (anInt != 0)
                     row++;
             }
-        }
         System.out.println(row);
 
         int[][] sparse=new int[row+1][3];
