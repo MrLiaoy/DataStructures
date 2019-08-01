@@ -11,33 +11,14 @@ public class SparseArray {
         arr[2][3]=4;
         arr[5][4]=4;
         //将数组转换为稀疏数组
-        int[][] sparse = getSparse(arr);
+        int[][] sparse = setSparse(arr);
 
         //对数组进行序列化
-        try {
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("sparase.data"));
-            objectOutputStream.writeObject(sparse);
-            objectOutputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        for (int i=0;i<4;i++){
-            System.out.println(sparse[i][0]+"\t"+sparse[i][1]+"\t"+sparse[i][2]+"\t");
-        }
+        Serialization(sparse);
 
 
         //对保存的数据反序列化
-        ObjectInputStream objectInputStream=null;
-       int[][] spa=null;
-        try {
-
-            objectInputStream=new ObjectInputStream(new FileInputStream("sparase.data"));
-          spa= (int[][]) objectInputStream.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        int[][] spa = Deserialization();
 
         //将稀疏数组转换为普通数组
         int[][] arr2 = getArray(spa);
@@ -50,6 +31,34 @@ public class SparseArray {
         }
     }
 
+    private static void Serialization(int[][] sparse) {
+        try {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("sparase.data"));
+            objectOutputStream.writeObject(sparse);
+            objectOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        for (int i=0;i<4;i++){
+            System.out.println(sparse[i][0]+"\t"+sparse[i][1]+"\t"+sparse[i][2]+"\t");
+        }
+    }
+
+    private static int[][] Deserialization() {
+        ObjectInputStream objectInputStream=null;
+        int[][] spa=null;
+        try {
+
+            objectInputStream=new ObjectInputStream(new FileInputStream("sparase.data"));
+          spa= (int[][]) objectInputStream.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return spa;
+    }
+
     private static int[][] getArray(int[][] sparse) {
         int[][] arr2=new int[sparse[0][0]][sparse[0][1]];
 
@@ -59,7 +68,7 @@ public class SparseArray {
         return arr2;
     }
 
-    private static int[][] getSparse(int[][] arr) {
+    private static int[][] setSparse(int[][] arr) {
         int row=0;
         for(int i=0 ; i<arr.length;i++){
             for (int j=0;j<arr[i].length;j++){
