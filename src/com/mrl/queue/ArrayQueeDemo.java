@@ -8,7 +8,7 @@ public class ArrayQueeDemo {
 
 class ArryQueue {
     //存放值的数组
-    private int arry[];
+    private int[] arry;
     //队列头索引
     private int front;
     //队列尾索引;
